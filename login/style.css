@@ -1,0 +1,253 @@
+/* Import Poppins font from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --mainColor: #ffc488;
+  --labelColor: #333;
+  --whiteColor: #fff;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  /* background: linear-gradient(to right, #ffe0b3, var(--mainColor)); */
+  /* background: #ffae90; */
+  /* background: linear-gradient(
+    90deg,
+    rgba(232, 170, 131, 1) 0%,
+    rgba(224, 125, 74, 1) 50%,
+    rgba(251, 95, 37, 1) 100%
+  ); */
+  background: linear-gradient(
+    135deg,
+    #ffecd2 0%,
+    #fcb69f 25%,
+    #ff9966 50%,
+    #ff7e5f 75%,
+    #ff5d22 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 30px auto;
+}
+
+.wrapper {
+  width: 400px;
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Form container styling */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-container .btn {
+  margin-bottom: 20px;
+}
+
+.form-container.active {
+  display: flex;
+}
+
+.form-container h2 {
+  text-align: center;
+  color: #555;
+  font-size: 2rem;
+  margin-bottom: 25px;
+  font-weight: bolder;
+}
+
+/* Updated form group */
+.form-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px 12px 44px;
+  font-size: 16px;
+  border: 0.1rem solid var(--labelColor);
+  border-radius: 0.5rem;
+  outline: none;
+  background: transparent;
+  transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #ff4500;
+}
+
+.form-group i,
+.form-group label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  text-transform: capitalize;
+  color: var(--labelColor);
+  padding: 0 0.5rem;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.form-group i {
+  position: absolute;
+  top: 50%;
+  left: 0.5rem;
+  transform: translateY(-50%);
+  color: black;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group.focused i,
+.form-group input:valid ~ i {
+  top: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.form-group label {
+  left: 2.2rem;
+}
+
+form .form-group input:focus ~ label,
+form .form-group input:valid ~ label,
+form .form-group input:focus ~ i,
+form .form-group input:valid ~ i,
+form .form-group select:focus ~ label,
+form .form-group select:valid ~ label,
+form .form-group select:focus ~ i,
+form .form-group select:valid ~ i {
+  top: 0 !important;
+  font-size: 1rem !important;
+  background-color: var(--whiteColor);
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  height: 48px;
+  background-color: #ff4500;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn:hover {
+  background-color: #e03d00;
+}
+
+/* Links */
+.link {
+  text-align: center;
+  font-size: 14px;
+}
+
+.link a {
+  color: #ff4500;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
+
+/* Forgot password */
+.forgot-pass {
+  text-align: left;
+  margin-top: -20px;
+  margin-bottom: 30px;
+}
+
+.forgot-pass a {
+  font-size: 14px;
+  color: #ff4500;
+  text-decoration: none;
+}
+
+.forgot-pass a:hover {
+  text-decoration: underline;
+}
+
+.forgot-password .btn {
+  margin-bottom: 20px;
+}
+
+.or-divider {
+  text-align: center;
+  font-size: 16px;
+  color: #7a7878;
+  margin: 10px 0;
+}
+
+/* .divider-line {
+  border: none;
+  border-top: 1.5px solid #ccc;
+  margin: 30px 0;
+} */
+
+/* Google Sign-in container */
+.g_id_signin {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.g_id_signin > div {
+  width: 100% !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .wrapper {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+/* Hide default date format (dd-mm-yyyy) inside date input */
+input[type="date"]::-webkit-datetime-edit {
+  color: transparent;
+}
+
+input[type="date"]:focus::-webkit-datetime-edit,
+input[type="date"]:valid::-webkit-datetime-edit {
+  color: black; /* Show entered date */
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #000 !important;
+}

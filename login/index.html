@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Sign In & Sign Up</title>
+    <!-- Font awesome icons -->
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sign Up Form -->
+      <div class="form-container sign-up">
+        <form action="auth.php" method="post" id="signupForm">
+          <h2>Sign Up</h2>
+
+          <!-- First Name -->
+          <div class="form-group">
+            <input type="text" name="first_name" required />
+            <i class="fas fa-user"></i>
+            <label>First Name</label>
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group">
+            <input type="text" name="last_name" required />
+            <i class="fas fa-user"></i>
+            <label>Last Name</label>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <input type="email" name="email" required />
+            <i class="fas fa-at"></i>
+            <label>Email</label>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-group">
+            <input type="tel" name="phone" required pattern="[0-9]{10}" />
+            <i class="fas fa-phone"></i>
+            <label>Phone Number</label>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="form-group">
+            <input
+              type="text"
+              id="dob"
+              name="dob"
+              onfocus="this.type='date'; this.parentNode.classList.add('focused')"
+              onblur="if(!this.value) { this.type='text'; this.parentNode.classList.remove('focused'); }"
+              required
+              placeholder=" "
+            />
+            <i class="fas fa-calendar"></i>
+            <label for="dob">Date of Birth</label>
+          </div>
+
+          <!-- Gender -->
+          <div class="form-group">
+            <select name="gender" required>
+              <option value="" disabled selected hidden></option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <i class="fas fa-venus-mars"></i>
+            <label>Gender</label>
+          </div>
+
+          <!-- Location -->
+          <div class="form-group">
+            <input type="text" name="location" required />
+            <i class="fas fa-map-marker-alt"></i>
+            <label>Location</label>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <input type="password" name="password" required />
+            <i class="fas fa-lock"></i>
+            <label>Password</label>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <input type="password" name="confirm_password" required />
+            <i class="fas fa-lock"></i>
+            <label>Confirm Password</label>
+          </div>
+
+          <button type="submit" class="btn" name="signup">Sign Up</button>
+
+          <div class="link">
+            <p>
+              Already have an account?
+              <a href="#" class="signin-link">Sign In</a>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sign In Form -->
+      <div class="form-container sign-in">
+        <form action="auth.php" method="post" id="loginForm">
+          <h2>Login</h2>
+          <!-- Email -->
+          <div class="form-group">
+            <input type="email" name="email" required />
+            <i class="fas fa-at"></i>
+            <label>Email</label>
+          </div>
+          <!-- Password -->
+          <div class="form-group">
+            <input type="password" name="password" required />
+            <i class="fas fa-lock"></i>
+            <label>Password</label>
+          </div>
+
+          <div class="forgot-pass">
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="btn" name="signin">Login</button>
+
+          <!-- OR Divider -->
+          <!-- <div class="or-divider">OR</div> -->
+          <!-- <hr class="divider-line" /> -->
+
+          <!-- Continue with Google -->
+          <!-- <div class="google-signin-wrapper">
+            <div
+              id="g_id_onload"
+              data-client_id="1073890603904-23hgh1epqsbhb3r97i95m5uir1k5mulh.apps.googleusercontent.com"
+              data-login_uri="http://localhost:8081/PickMySeat/login/signin-google.php"
+              data-auto_prompt="false"
+            ></div>
+
+            <div
+              class="g_id_signin"
+              data-type="standard"
+              data-size="large"
+              data-theme="outline"
+              data-text="continue_with"
+              data-shape="square"
+              data-logo_alignment="left"
+            ></div>
+          </div> -->
+
+          <div class="link">
+            <p>
+              Don't have an account? <a href="#" class="signup-link">Sign Up</a>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Forgot Password Form -->
+      <div class="form-container forgot-password">
+        <form action="send_reset_link.php" method="post">
+          <h2>Forgot Password</h2>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <input type="email" name="email" required />
+            <i class="fas fa-at"></i>
+            <label>Enter Your Registered Email</label>
+          </div>
+
+          <button type="submit" class="btn" name="send_link">
+            Send Reset Link
+          </button>
+
+          <div class="link">
+            <p>
+              Remembered your password?
+              <a href="#" class="signin-link">Sign In</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get("redirect");
+
+      if (redirect) {
+        const encodedRedirect = encodeURIComponent(redirect);
+
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) {
+          loginForm.action = "auth.php?redirect=" + encodedRedirect;
+        }
+
+        const signupForm = document.getElementById("signupForm");
+        if (signupForm) {
+          signupForm.action = "auth.php?redirect=" + encodedRedirect;
+        }
+      }
+    </script>
+
+    <script src="./main.js"></script>
+  </body>
+</html>

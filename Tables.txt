@@ -1,0 +1,135 @@
+1. Users
+
+CREATE TABLE users (
+  id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50),
+  email VARCHAR(100) NOT NULL,
+  phone VARCHAR(15),
+  dob DATE,
+  gender VARCHAR(10),
+  location VARCHAR(100),
+  password VARCHAR(255),
+  google_id VARCHAR(100),
+  reset_token VARCHAR(255),
+  role VARCHAR(20) DEFAULT 'user',
+  PRIMARY KEY (id),
+  UNIQUE (email),
+  UNIQUE (google_id)
+);
+
+
+
+2. Movies
+
+CREATE TABLE movies (
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  genres VARCHAR(255) NOT NULL,
+  rating VARCHAR(50),
+  languages VARCHAR(100),
+  duration VARCHAR(20),
+  release_date VARCHAR(50),
+  formats VARCHAR(100),
+  about TEXT,
+  poster_path VARCHAR(255),
+  trailer_path VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+
+
+3. Theaters
+
+CREATE TABLE theaters (
+  theater_id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  location VARCHAR(255) NOT NULL,
+  PRIMARY KEY (theater_id)
+);
+
+
+
+4. Shows
+
+CREATE TABLE shows (
+    show_id INT NOT NULL AUTO_INCREMENT,
+    movie_id INT DEFAULT NULL,
+    theater_id INT DEFAULT NULL,
+    show_date DATE DEFAULT NULL,
+    show_time TIME DEFAULT NULL,
+    vip_price DECIMAL(8,2) NOT NULL,
+    gold_price DECIMAL(8,2) NOT NULL,
+    silver_price DECIMAL(8,2) NOT NULL,
+    PRIMARY KEY (show_id),
+    FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (theater_id) REFERENCES theaters(theater_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+5. Offers
+
+CREATE TABLE offers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    description TEXT NOT NULL,
+    valid_until DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('active', 'inactive') NOT NULL DEFAULT 'active'
+);
+
+CREATE EVENT update_offer_status
+ON SCHEDULE EVERY 1 DAY
+DO
+  UPDATE offers
+  SET status = 'inactive'
+  WHERE valid_until < NOW() AND status = 'active';
+
+
+
+6. Bookings
+
+CREATE TABLE bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    show_id INT NOT NULL,
+    seats TEXT NOT NULL,
+    seat_types TEXT NOT NULL,
+    total_price DECIMAL(10,2) NOT NULL,
+    booking_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('confirmed', 'cancelled') NOT NULL DEFAULT 'confirmed',
+    payment_id VARCHAR(100),
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (show_id) REFERENCES shows(show_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (payment_id) REFERENCES payments(payment_id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+
+
+7. Payments
+
+CREATE TABLE payments (
+    payment_id VARCHAR(100) PRIMARY KEY,
+    order_id VARCHAR(100) NOT NULL,
+    booking_id INT,
+    amount_paid DECIMAL(10, 2) NOT NULL,
+    offer_id VARCHAR(100), -- Razorpay offer ID (nullable)
+    status ENUM('success', 'failed', 'pending') NOT NULL,
+    method VARCHAR(50),
+    payment_time DATETIME NOT NULL,
+    razorpay_signature TEXT,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
